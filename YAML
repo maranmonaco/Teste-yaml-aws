@@ -1,0 +1,34 @@
+service: nome-do-servico
+frameworkVersion: ">=1.72.0"
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: sua-regiao-aqui
+
+resources:
+  Resources:
+    DynamoDBTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: nome-da-tabela
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+functions:
+  functionName:
+    handler: caminho-para-o-handler
+    events:
+      - http:
+          path: /rota-da-api
+          method: get
+
+plugins:
+  - serverless-offline
+
